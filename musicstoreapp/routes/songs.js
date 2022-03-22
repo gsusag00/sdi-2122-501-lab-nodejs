@@ -1,11 +1,21 @@
 module.exports = function(app){
     app.get("/songs",function(req,res) {
-        let response = "";
-        if(req.query.title!= null && typeof (req.query.title) != "undefined")
-            response = 'Titulo:' + req.query.title + '<br>'
-        if(req.query.author!=null && typeof (req.query.author) != "undefined")
-            response += 'Author: ' + req.query.author;
-        res.send(response);
+        let songs = [{
+            "title": "Blank space",
+            "price": "1.2"
+        },{
+            "title": "See you again",
+            "price": "1.3"
+        },{
+            "title": "Uptown funk",
+            "price": "1.1"
+        },];
+
+        let response = {
+            "seller": "Tienda de canciones",
+            songs: songs
+        };
+        res.render("shop.twig",response);
     });
 
     app.get("/add",function(req,res) {
