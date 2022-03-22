@@ -24,19 +24,18 @@ module.exports = function(app){
         res.send(String(response));
     });
 
-    app.get("/songs/:id",function(req,res){
-        let response = "id: " + req.params.id;
-        res.send(response);
-    });
+    // app.get("/songs/:id",function(req,res){
+    //     let response = "id: " + req.params.id;
+    //     res.send(response);
+    // });
+    //
+    // app.get("/songs/:kind/:id",function(req,res){
+    //     let response = "Id: " + req.params.id + "<br>" + "Tipo de musica: " + req.params.kind;
+    //     res.send(response);
+    // });
 
-    app.get("/songs/:kind/:id",function(req,res){
-        let response = "Id: " + req.params.id + "<br>" + "Tipo de musica: " + req.params.kind;
-        res.send(response);
-    });
-
-    app.post('/songs/add',function(req,res){
-       let response = "Cancion agregada: " + req.body.title + "<br>" + "genero: " + req.body.kind + "<br>" + "precio: " + req.body.price;
-       res.send(response);
+    app.get('/songs/add',function(req,res){
+        res.render("add.twig");
     });
 
     app.get("/promo*",function(req,res) {
