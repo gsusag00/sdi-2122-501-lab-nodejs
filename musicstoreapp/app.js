@@ -1,14 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var app = express();
+let app = express();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var songsRouter = require("./routes/songs")(app);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/users');
+let songsRouter = require("./routes/songs")(app);
 
 
 
