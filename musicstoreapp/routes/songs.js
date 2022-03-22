@@ -33,6 +33,7 @@ module.exports = function(app){
     //     let response = "Id: " + req.params.id + "<br>" + "Tipo de musica: " + req.params.kind;
     //     res.send(response);
     // });
+    //mongodb+srv://admin:sdi@tiendamusica.dxqcq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
     app.get('/songs/add',function(req,res){
         res.render("add.twig");
