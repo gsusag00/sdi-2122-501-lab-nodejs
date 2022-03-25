@@ -18,7 +18,7 @@ let authorsRouter = require('./routes/authors')(app);
 
 
 // view engine setup
-app.set('views', [path.join(__dirname, 'views'),path.join(__dirname,'views/authors/')]);
+app.set('views', [path.join(__dirname, 'views')]);
 app.set('view engine', 'twig');
 
 app.use(logger('dev'));
