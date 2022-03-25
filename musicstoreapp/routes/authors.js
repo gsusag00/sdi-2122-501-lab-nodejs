@@ -23,11 +23,11 @@ module.exports = function(app){
     app.post('/authors/add', function(req,res) {
         let response = "";
         let a = req.body.name;
-        response += a!=undefined? "Nombre: " + a : "Nombre no enviado";
+        response += a!==undefined? "Nombre: " + a : "Nombre no enviado";
         a = req.body.group;
-        response += a!=undefined? " Grupo: " + a : " Grupo no enviado";
+        response += a!==undefined? " Grupo: " + a : " Grupo no enviado";
         a = req.body.role;
-        response += a!=undefined? " Rol: " + a : " Rol no enviado";
+        response += a!==undefined? " Rol: " + a : " Rol no enviado";
         res.send(response);
     });
 
