@@ -52,6 +52,29 @@ module.exports = function(app){
         res.render("authors/authors.twig",response);
     });
 
+    app.get('/authors/filter/:id',function(req,res) {
+        let authors = [{
+            "name": "Lil Uzi Vert",
+            "group": "Lil Uzi Vert",
+            "role": "Cantante"
+        },{
+            "name": "Metro Booming",
+            "group": "MB",
+            "role": "Teclista"
+        },{
+            "name": "Lil Tecca",
+            "group": "LT",
+            "role": "Guitarrista"
+        },];
+        let filtered = authors.filter((a) => a.role == req.params.id);
+        console.log(filtered);
+
+        let response = {
+            authors: filtered
+        };
+        res.render("authors/authors.twig",response);
+    });
+
     app.get('/au**rs/:id',function (req,res){
         res.redirect("/authors");
     });
