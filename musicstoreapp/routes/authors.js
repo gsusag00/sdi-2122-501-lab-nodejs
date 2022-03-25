@@ -1,7 +1,23 @@
 module.exports = function(app){
 
     app.get('/authors/add', function(req,res) {
-        res.render('authors/add.twig');
+        let roles = [{
+            "name": "Cantante",
+            "value": "cantanate"
+        },{
+            "name": "Bateria",
+            "value": "bateria"
+        },{
+            "name": "Guitarrista",
+            "value": "guitarrista"
+        },{
+            "name": "Teclista",
+            "value": "teclista"
+        }];
+        let response = {
+          roles: roles
+        };
+        res.render('authors/add.twig',response);
     });
 
     app.post('/authors/add', function(req,res) {
