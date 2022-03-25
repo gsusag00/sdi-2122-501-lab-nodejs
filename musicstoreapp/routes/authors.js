@@ -67,7 +67,6 @@ module.exports = function(app){
             "role": "Guitarrista"
         },];
         let filtered = authors.filter((a) => a.role == req.params.id);
-        console.log(filtered);
 
         let response = {
             authors: filtered
