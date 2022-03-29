@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 const {MongoClient} = require("mongodb");
 const url = 'mongodb+srv://sdi:admin@tiendamusica.dxqcq.mongodb.net/tiendamusica?retryWrites=true&w=majority'
 let fileUpload = require('express-fileupload');
+let crypto = require('crypto');
 
 let app = express();
 app.use(fileUpload({
@@ -15,6 +16,8 @@ app.use(fileUpload({
 }));
 app.set('connectionStrings',url);
 app.set('uploadPath',__dirname);
+app.set('clave','abcdefg');
+app.set('crypto',crypto);
 
 
 
@@ -22,11 +25,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
-let songsRepository = require('./repositories/songsRepository.js');
+const songsRepository = require('./repositories/songsRepository.js');
 songsRepository.init(app,MongoClient);
-let songsRouter = require("./routes/songs")(app,songsRepository);
-let authorsRouter = require('./routes/authors')(app);
+const usersRepository = require("./repositories/usersRepository.js");
+usersRepository.init(app, MongoClient);
+
+require("./routes/users")(app, usersRepository);
+require("./routes/songs")(app,songsRepository);
+require('./routes/authors')(app);
 
 
 
@@ -41,7 +47,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
