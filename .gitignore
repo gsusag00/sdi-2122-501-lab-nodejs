@@ -41,6 +41,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+musicstoreapp/public/covers/
+musicstoreapp/public/audios/
+
+
 # TypeScript v1 declaration files
 typings/
 

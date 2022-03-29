@@ -6,9 +6,15 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 const {MongoClient} = require("mongodb");
 const url = 'mongodb+srv://sdi:admin@tiendamusica.dxqcq.mongodb.net/tiendamusica?retryWrites=true&w=majority'
+let fileUpload = require('express-fileupload');
 
 let app = express();
+app.use(fileUpload({
+  limits: { fileSize: 20 * 1024 * 1024},
+  createParentPath: true
+}));
 app.set('connectionStrings',url);
+app.set('uploadPath',__dirname);
 
 
 
