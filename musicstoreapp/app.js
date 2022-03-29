@@ -11,12 +11,15 @@ let app = express();
 app.set('connectionStrings',url);
 
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
-let songsRouter = require("./routes/songs")(app,MongoClient);
+let songsRepository = require('./repositories/songsRepository.js');
+songsRepository.init(app,MongoClient);
+let songsRouter = require("./routes/songs")(app,songsRepository);
 let authorsRouter = require('./routes/authors')(app);
 
 
