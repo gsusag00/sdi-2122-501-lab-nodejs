@@ -4,15 +4,19 @@ let path = require('path');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+const {MongoClient} = require("mongodb");
+const url = 'mongodb+srv://sdi:admin@tiendamusica.dxqcq.mongodb.net/tiendamusica?retryWrites=true&w=majority'
 
 let app = express();
+app.set('connectionStrings',url);
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
-let songsRouter = require("./routes/songs")(app);
+let songsRouter = require("./routes/songs")(app,MongoClient);
 let authorsRouter = require('./routes/authors')(app);
 
 
