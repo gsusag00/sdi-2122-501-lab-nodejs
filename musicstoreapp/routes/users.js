@@ -1,9 +1,23 @@
-var express = require('express');
-var router = express.Router();
+module.exports = function(app,usersRepository) {
+  app.get('/users', function (req, res) {
+    res.send('lista de usuarios');
+  });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+  app.get('/users/signup', function (req, res) {
+    res.render("signup.twig");
+  });
 
-module.exports = router;
+  app.post('/users/signup', function (req, res) {
+    let securePassword = app.get("crypto").createHmac('sha256', app.get('clave'))
+        .update(req.body.password).digest('hex');
+    let user = {
+      email: req.body.email,
+      password: securePassword
+    }
+    usersRepository.insertUser(user).then(userId => {
+      res.send('Usuario registrado ' + userId);
+    }).catch(error => {
+      res.send("Error al insertar el usuario");
+    });
+  });
+}
