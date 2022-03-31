@@ -5,12 +5,18 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 const {MongoClient} = require("mongodb");
-const url = 'mongodb+srv://sdi:admin@tiendamusica.dxqcq.mongodb.net/tiendamusica?retryWrites=true&w=majority'
+const url = 'mongodb+srv://sdi:admin@tiendamusica.dxqcq.mongodb.net/tiendamusica?retryWrites=true&w=majority';
 let fileUpload = require('express-fileupload');
 let crypto = require('crypto');
 let expressSession = require('express-session');
+const userSessionRouter = require('./routes/userSessionRouter');
+const userAudiosRouter = require('./routes/userAudiosRouter');
+
+
 
 let app = express();
+
+
 app.use(fileUpload({
   limits: { fileSize: 20 * 1024 * 1024},
   createParentPath: true
@@ -24,6 +30,11 @@ app.set('connectionStrings',url);
 app.set('uploadPath',__dirname);
 app.set('clave','abcdefg');
 app.set('crypto',crypto);
+
+app.use("/songs/add",userSessionRouter);
+app.use("/publications",userSessionRouter);
+app.use("/audios/",userAudiosRouter);
+app.use("/shop/",userSessionRouter);
 
 
 
