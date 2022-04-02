@@ -28,5 +28,29 @@ module.exports = {
         } catch (error) {
             throw(error);
         }
+    },
+    findComment: async function(filter,options){
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'comments';
+            const commentCollection = database.collection(collectionName);
+            const comment = await commentCollection.findOne(filter, options);
+            return comment;
+        } catch (error) {
+            throw (error);
+        }
+    },
+    deleteComment: async function(filter,options){
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'comments';
+            const commentCollection = database.collection(collectionName);
+            const comment = await commentCollection.deleteOne(filter, options);
+            return comment;
+        } catch (error) {
+            throw (error);
+        }
     }
 };
