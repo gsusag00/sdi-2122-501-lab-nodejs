@@ -1,5 +1,5 @@
 const {ObjectId} = require("mongodb");
-module.exports = function(app,songsRepository){
+module.exports = function(app,songsRepository, commentsRepository){
     app.get("/songs",function(req,res) {
         let songs = [{
             "title": "Blank space",
@@ -25,9 +25,9 @@ module.exports = function(app,songsRepository){
         if(req.query.search != null && typeof(req.query.search) != "undefined" && req.query.search != "") {
             filter = {"title": {$regex: ".*" + req.query.search + ".*"}};
         }
-       songsRepository.getSongs(filter,options).then(songs => {
-           res.render("shop.twig", {songs: songs});
-       }).catch(error=> res.send("Se ha producido un error al listar las canciones " + error));
+        songsRepository.getSongs(filter,options).then(songs => {
+            res.render("shop.twig", {songs: songs});
+        }).catch(error=> res.send("Se ha producido un error al listar las canciones " + error));
     });
 
     app.get('/songs/add',function(req,res){
@@ -78,14 +78,16 @@ module.exports = function(app,songsRepository){
     //     res.send(String(response));
     // });
 
-    app.get('/songs/:id', function (req, res) {
+    app.get('/songs/:id', async function (req, res) {
         let filter = {_id: ObjectId(req.params.id)};
         let options = {};
-        songsRepository.findSong(filter, options).then(song => {
-            res.render("songs/song.twig", {song: song});
-        }).catch(error => {
-            res.send("Se ha producido un error al buscar la canción " + error)
+        let song = await songsRepository.findSong(filter,options).catch(error=> {
+            res.send("Se ha producido un error al buscar la cancion: " + error)
         });
+        let comments = await commentsRepository.getComments({song_id: song._id},options).catch(error=> {
+            res.send("Se ha producido un error al buscar los comentarios: " + error);
+        });
+        res.render("songs/song.twig",{song: song, comments: comments})
     });
 
     app.get('/publications',function(req,res) {

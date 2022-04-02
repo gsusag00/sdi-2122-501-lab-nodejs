@@ -46,10 +46,12 @@ const songsRepository = require('./repositories/songsRepository.js');
 songsRepository.init(app,MongoClient);
 const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);
-
+const commentsRepository = require("./repositories/commentsRepository.js");
+commentsRepository.init(app, MongoClient);
 require("./routes/users")(app, usersRepository);
-require("./routes/songs")(app,songsRepository);
+require("./routes/songs")(app,songsRepository,commentsRepository);
 require('./routes/authors')(app);
+require('./routes/comments')(app,commentsRepository);
 
 
 
