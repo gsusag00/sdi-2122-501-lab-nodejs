@@ -11,6 +11,7 @@ let crypto = require('crypto');
 let expressSession = require('express-session');
 const userSessionRouter = require('./routes/userSessionRouter');
 const userAudiosRouter = require('./routes/userAudiosRouter');
+const userAuthorRouter = require('./routes/userAuthorRouter');
 
 
 
@@ -33,8 +34,13 @@ app.set('crypto',crypto);
 
 app.use("/songs/add",userSessionRouter);
 app.use("/publications",userSessionRouter);
+app.use("/songs/buy",userSessionRouter);
+app.use("/purchases",userSessionRouter);
 app.use("/audios/",userAudiosRouter);
 app.use("/shop/",userSessionRouter);
+app.use("/songs/edit",userAuthorRouter);
+app.use("/songs/delete",userAuthorRouter);
+
 
 
 
@@ -47,6 +53,7 @@ songsRepository.init(app,MongoClient);
 const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);
 const commentsRepository = require("./repositories/commentsRepository.js");
+const {errorFunc} = require("express-fileupload/lib/utilities");
 commentsRepository.init(app, MongoClient);
 require("./routes/users")(app, usersRepository);
 require("./routes/songs")(app,songsRepository,commentsRepository);
@@ -75,6 +82,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
+  console.log("Se ha producido un error: " + err);
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
