@@ -39,6 +39,19 @@
 
 <div class="container">
 
+    <script>
+        let params = new URLSearchParams(location.search);
+        let message = params.get("message");
+        let messageType = params.get("messageType");
+        if (message != null && message != "") {
+            if (messageType == "") {
+                messageType = 'alert-info';
+            }
+            $(".container")
+                .append("<div class='alert " + messageType + "'>" + message + " </div>");
+        }
+    </script>
+
     {% block main_container %}
         <!-- Posible contenido por defecto -->
     {% endblock %}
