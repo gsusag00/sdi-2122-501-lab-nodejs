@@ -53,6 +53,7 @@ songsRepository.init(app,MongoClient);
 const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);
 const commentsRepository = require("./repositories/commentsRepository.js");
+const {errorFunc} = require("express-fileupload/lib/utilities");
 commentsRepository.init(app, MongoClient);
 require("./routes/users")(app, usersRepository);
 require("./routes/songs")(app,songsRepository,commentsRepository);
@@ -81,6 +82,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
+  console.log("Se ha producido un error: " + err);
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
