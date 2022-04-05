@@ -90,7 +90,7 @@ module.exports = function(app,songsRepository, commentsRepository){
         res.render("songs/song.twig",{song: song, comments: comments})
     });
 
-    app.get('/publications',function(req,res) {
+    app.get('/publication',function(req,res) {
         let filter = {author: req.session.user};
         let options = {sort: {title: 1}};
         songsRepository.getSongs(filter,options).then(songs => {
@@ -166,8 +166,19 @@ module.exports = function(app,songsRepository, commentsRepository){
         }
     };
 
+    app.get('/songs/delete/:id', function(req,res) {
+        let filter = {_id: ObjectId(req.params.id)};
+        songsRepository.deleteSong(filter,{}).then(result => {
+            if(result==null || result.deletedCount == 0) {
+                res.send("No se ha podido eliminar el registro");
+            } else {
+                res.redirect("/publication");
+            }
+        }).catch(error=> res.send("Se ha producido un error al intentar eliminar la canción: " + error));
+    });
+
     app.get("/promo*",function(req,res) {
-       res.send("Respuesta al patrón promo*")
+        res.send("Respuesta al patrón promo*")
     });
 
     app.get("/pro*ar",function(req,res) {

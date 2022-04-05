@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node bin/www.js"
+    "start": "nodemon bin/www.js -e twig,js,json"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -16,5 +16,8 @@
     "mongodb": "^4.1.2",
     "morgan": "~1.9.1",
     "twig": "^1.15.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
