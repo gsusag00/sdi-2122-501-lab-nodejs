@@ -109,7 +109,26 @@ module.exports = function(app,songsRepository, commentsRepository){
         let comments = await commentsRepository.getComments({song_id: song._id},options).catch(error=> {
             res.send("Se ha producido un error al buscar los comentarios: " + error);
         });
-        res.render("songs/song.twig",{song: song, comments: comments})
+        let userPurchase = {
+            user: req.session.user,
+            isPurchased: false
+        }
+        filter = {user: req.session.user};
+        options = {projection: {_id: 0, songId: 1}};
+        await songsRepository.getPurchases(filter, options).then(purchasedIds => {
+            for (let i = 0; i < purchasedIds.length; i++) {
+                if(purchasedIds[i].songId.toString() === song._id.toString()){
+                    userPurchase.isPurchased = true;
+                    return;
+                }
+            }
+        }).catch(error => {
+            res.send("Se ha producido un error al listar las canciones del usuario " + error)
+        });
+        if(userPurchase.isPurchased === undefined){
+            userPurchase.isPurchased = false;
+        }
+        res.render("songs/song.twig",{song: song, comments: comments, userPurchase:userPurchase})
     });
 
     app.get('/publication',function(req,res) {
