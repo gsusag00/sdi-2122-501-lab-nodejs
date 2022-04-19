@@ -59,6 +59,7 @@ require("./routes/users")(app, usersRepository);
 require("./routes/songs")(app,songsRepository,commentsRepository);
 require('./routes/authors')(app);
 require('./routes/comments')(app,commentsRepository);
+require("./routes/api/songsAPIv1.0.js")(app, songsRepository);
 
 
 
