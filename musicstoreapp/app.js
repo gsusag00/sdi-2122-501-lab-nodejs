@@ -12,10 +12,18 @@ let expressSession = require('express-session');
 const userSessionRouter = require('./routes/userSessionRouter');
 const userAudiosRouter = require('./routes/userAudiosRouter');
 const userAuthorRouter = require('./routes/userAuthorRouter');
+let jwt = require('jsonwebtoken');
+const userTokenRouter = require('./routes/userTokenRouter');
+const commentsRepository = require("./repositories/commentsRepository.js");
+const usersRepository = require("./repositories/usersRepository.js");
+const {errorFunc} = require("express-fileupload/lib/utilities");
+let indexRouter = require('./routes/index');
+const songsRepository = require('./repositories/songsRepository.js');
 
 
 
 let app = express();
+app.set('jwt',jwt);
 
 
 app.use(fileUpload({
@@ -32,6 +40,8 @@ app.set('uploadPath',__dirname);
 app.set('clave','abcdefg');
 app.set('crypto',crypto);
 
+
+
 app.use("/songs/add",userSessionRouter);
 app.use("/publications",userSessionRouter);
 app.use("/songs/buy",userSessionRouter);
@@ -40,26 +50,22 @@ app.use("/audios/",userAudiosRouter);
 app.use("/shop/",userSessionRouter);
 app.use("/songs/edit",userAuthorRouter);
 app.use("/songs/delete",userAuthorRouter);
-
+app.use("/api/v1.0/songs/", userTokenRouter);
 
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-let indexRouter = require('./routes/index');
-const songsRepository = require('./repositories/songsRepository.js');
 songsRepository.init(app,MongoClient);
-const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);
-const commentsRepository = require("./repositories/commentsRepository.js");
-const {errorFunc} = require("express-fileupload/lib/utilities");
 commentsRepository.init(app, MongoClient);
+require("./routes/api/songsAPIv1.0.js")(app, songsRepository, usersRepository);
 require("./routes/users")(app, usersRepository);
 require("./routes/songs")(app,songsRepository,commentsRepository);
 require('./routes/authors')(app);
 require('./routes/comments')(app,commentsRepository);
-require("./routes/api/songsAPIv1.0.js")(app, songsRepository);
+
 
 
 
