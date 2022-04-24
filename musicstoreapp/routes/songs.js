@@ -120,7 +120,7 @@ module.exports = function(app,songsRepository, commentsRepository){
                 if(purchasedIds[i].songId.toString() === song._id.toString()){
                     userPurchase.isPurchased = true;
                     return;
-                }
+                }app
             }
         }).catch(error => {
             res.send("Se ha producido un error al listar las canciones del usuario " + error)
