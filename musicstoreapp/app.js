@@ -20,8 +20,10 @@ const {errorFunc} = require("express-fileupload/lib/utilities");
 let indexRouter = require('./routes/index');
 const songsRepository = require('./repositories/songsRepository.js');
 let logger = require('morgan');
+let rest = require('request');
 
 let app = express();
+app.set('rest',rest);
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
