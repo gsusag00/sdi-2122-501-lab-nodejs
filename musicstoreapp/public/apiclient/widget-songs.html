@@ -1,13 +1,14 @@
-
-<div id="widget-songs" >
+<div id="widget-songs">
+    <input class="form-control" id="filter-by-
+name" placeholder="Filtrar por nombre" type="text"/>
     <button class="btn btn-primary" onclick="widgetAddSong()">Nueva Canción</button>
-    <button class="btn" onclick="loadSongs()" >Actualizar</button>
+    <button class="btn" onclick="loadSongs()">Actualizar</button>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Título</th>
+            <th><a onclick="sortByTitle()">Título</a></th>
             <th>Género</th>
-            <th>Precio</th>
+            <th><a onclick="sortByPrice()">Precio</a></th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
@@ -16,10 +17,43 @@
 </div>
 <script>
     var songs;
+    var priceDesc = true;
+    window.history.pushState("", "", "/apiclient/client.html?w=login");
+    function sortByPrice() {
+        if (priceDesc) {
+            songs.sort(function (a, b) {
+                return parseFloat(a.price) - parseFloat(b.price);
+            });
+        } else {
+            songs.sort(function (a, b) {
+                return parseFloat(b.price) - parseFloat(a.price);
+            });
+        }
+        updateSongsTable(songs);
+        priceDesc = !priceDesc //invertir ordenación
+    }
+
+    function sortByTitle() {
+        songs.sort(function (a, b) {
+            if (a.title > b.title) return 1;
+            if (a.title < b.title) return -1;
+            return 0;
+        });
+        updateSongsTable(songs);
+    }
+
     function songDetail(_id) {
         selectedSongId = _id;
         $("#main-container").load("widget-detail.html");
     }
+
+    $('#filter-by-name').on('input', function (e) {
+        let filteredSongs = [];
+        let filterValue = $("#filter-by-name").val();
+        filteredSongs = songs.filter(song => song.title.includes(filterValue));
+        updateSongsTable(filteredSongs);
+    })
+
     function loadSongs() {
         $.ajax({
             url: URLbase + "/songs",
@@ -36,6 +70,7 @@
             }
         });
     }
+
     function songDelete(_id) {
         $.ajax({
             url: URLbase + "/songs/" + _id,
@@ -52,6 +87,7 @@
             }
         });
     }
+
     function updateSongsTable(songs) {
         $("#songsTableBody").empty(); // Vaciar la tabla
         for (i = 0; i < songs.length; i++) {
@@ -69,8 +105,10 @@
 //la id tiene que ir entre comillas ' '
         }
     }
+
     function widgetAddSong() {
-        $( "#main-container" ).load( "widget-add.html");
+        $("#main-container").load("widget-add.html");
     }
+
     loadSongs();
 </script>
