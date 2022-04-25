@@ -48,7 +48,7 @@ public class Window {
         textMemory.setBorder(new EmptyBorder(10, 10, 10, 10));
         textMemory.setText("Memoria libre:");
         panel.add(textMemory);
-// Propiedades visibilidad frame
+// Propiedades visibilidad frame cambio para el commit
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         updateButton.addActionListener(arg0 -> {
